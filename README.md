@@ -7,6 +7,18 @@ A pixel-perfect, interactive digital replica of the **Multigraphics Group 100-Qu
 ## Features
 
 - **Exact Physical Replica**: Faithful digital recreation of the Multigraphics Group sample OMR sheet adhering strictly to A4 proportions ($920 \times 1300\text{ px}$ canvas) with timing marks along both borders.
+- **Fluid Responsive Scaling (Desktop, Tablet & Mobile)**:
+  - The sheet remains an un-reflowed master SVG on a $920 \times 1300\text{ px}$ canvas.
+  - Dynamically measures available viewport width via `ResizeObserver` and scales proportionally (`transform: scale()`) with a sized wrapper.
+  - No horizontal overflow, zero bottom clipping, and zero phantom margins.
+  - Zoom modes: **Fit Width (default)**, **Fit Page**, **100%**, **50%–200%**, and double-tap to zoom on touch screens. Remembers zoom preferences in `localStorage`.
+- **Mobile Quick Entry Mode**:
+  - Auto-adapted for small viewports ($< 640\text{ px}$) and toggleable on any device.
+  - Question stepper with large touch targets ($\ge 48\text{ px}$) for options $A, B, C, D$.
+  - Progress tracker, previous/next stepper buttons, jump-to-question selector, and 100-question grid overview.
+- **Dedicated Paper & Candidate Details Editor**:
+  - Mobile-friendly bottom sheet / desktop modal to cleanly input exam info, candidate name, roll number, stream, class, section, and codes.
+  - Mobile input font sizes $\ge 16\text{ px}$ to prevent iOS auto-zoom on focus.
 - **Interactive 100-Question Grid**: 4 columns of 25 questions ($1\text{–}25$, $26\text{–}50$, $51\text{–}75$, $76\text{–}100$) with four options ($A, B, C, D$). Clicking an option marks it in solid black; clicking again un-marks it.
 - **Candidate Identification Blocks**:
   - Candidate Name ($21\text{ columns} \times 26\text{ alphabet bubbles } A\text{–}Z$).
@@ -62,8 +74,8 @@ npm run start
 
 ## How to Export PDF / PNG
 
-1. Fill out your sheet details and mark your responses.
-2. In the top toolbar:
+1. Fill out your sheet details and mark your responses (either directly on the sheet or via **Quick Entry Mode**).
+2. In the toolbar:
    - Click **"Download PDF"** for an immediate, high-resolution A4 PDF.
    - Click **"Download PNG"** for a high-res ($2760 \times 3900$) image.
    - Click the **Settings icon** next to "Download PDF" to customize the file name or check **"Include Answer Key Summary Page"** to add a structured second page.
@@ -75,21 +87,23 @@ npm run start
 
 ```
 ├── app/
-│   ├── globals.css          # Print rules and root color variables
-│   ├── layout.tsx           # Document root layout and metadata
-│   └── page.tsx             # Main viewport, scaling wrapper, and modals
+│   ├── globals.css            # Print rules, 100dvh, touch-action, mobile font sizing
+│   ├── layout.tsx             # Document root layout, responsive viewport metadata
+│   └── page.tsx               # Main viewport, ResizeObserver scaling wrapper, modals
 ├── components/
-│   ├── AnswerKeySummary.tsx # Offscreen 2nd-page SVG summary generator
-│   ├── DownloadModal.tsx    # Export options popover (filename & format)
-│   ├── OMRSheet.tsx         # Master SVG sheet with interactive inputs
-│   ├── SavedSheetsModal.tsx # Saved sheets manager & JSON backup/restore
-│   └── Toolbar.tsx          # Top application bar, quick fill, zoom & actions
+│   ├── AnswerKeySummary.tsx   # Offscreen 2nd-page SVG summary generator
+│   ├── DownloadModal.tsx      # Responsive export options popover / bottom sheet
+│   ├── OMRSheet.tsx           # Master SVG sheet with interactive inputs
+│   ├── PaperDetailsModal.tsx  # Mobile-friendly paper & candidate details editor
+│   ├── QuickEntryModal.tsx    # Mobile quick entry stepper & 100-question grid
+│   ├── SavedSheetsModal.tsx   # Responsive saved sheets manager & JSON backup
+│   └── Toolbar.tsx            # Desktop / tablet / mobile toolbar & sticky bottom nav
 ├── types/
-│   └── omr.ts               # State data structures and empty initial state
+│   └── omr.ts                 # State data structures and empty initial state
 ├── utils/
-│   ├── exportImage.ts       # 3x high-resolution PNG / JPG export
-│   ├── exportPdf.ts         # Direct A4 jsPDF generator (canvas-to-PDF)
-│   └── storage.ts           # LocalStorage autosave & sheet operations
+│   ├── exportImage.ts         # 3x high-resolution PNG / JPG export
+│   ├── exportPdf.ts           # Direct A4 jsPDF generator (canvas-to-PDF)
+│   └── storage.ts             # LocalStorage autosave & sheet operations
 ├── package.json
 ├── tailwind.config.js
 └── tsconfig.json

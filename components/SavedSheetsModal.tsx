@@ -58,7 +58,9 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
 
   const handleSaveCurrent = (e: React.FormEvent) => {
     e.preventDefault();
-    const finalName = saveAsName.trim() || `${currentData.examName || "OMR Sheet"} - ${new Date().toLocaleDateString()}`;
+    const finalName =
+      saveAsName.trim() ||
+      `${currentData.examName || "OMR Sheet"} - ${new Date().toLocaleDateString()}`;
     saveSheet(finalName, currentData);
     setSaveAsName("");
     onRefreshList();
@@ -125,46 +127,52 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
     e.target.value = "";
   };
 
-  const filteredSheets = sheets.filter((s) =>
-    s.name.toLowerCase().includes(filterText.toLowerCase()) ||
-    (s.data.examName || "").toLowerCase().includes(filterText.toLowerCase())
+  const filteredSheets = sheets.filter(
+    (s) =>
+      s.name.toLowerCase().includes(filterText.toLowerCase()) ||
+      (s.data.examName || "").toLowerCase().includes(filterText.toLowerCase())
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex flex-col justify-end sm:justify-center items-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
+      <div className="w-full sm:max-w-2xl bg-white rounded-t-2xl sm:rounded-xl shadow-2xl border border-slate-200 max-h-[90vh] flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-200">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-pink-100 text-[#E6007E] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-pink-100 text-[#E6007E] flex items-center justify-center font-bold">
               <FolderOpen className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-base">My Saved OMR Sheets</h3>
-              <p className="text-xs text-slate-500">Manage, reopen, and download your saved sheets</p>
+              <h3 className="font-extrabold text-slate-900 text-sm sm:text-base leading-tight">
+                My Saved OMR Sheets
+              </h3>
+              <p className="text-[11px] text-slate-500">
+                Manage, reopen, and download your stored sheets
+              </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200 transition-colors"
+            className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Close"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Quick Save Current Bar */}
-        <div className="p-4 bg-pink-50/50 border-b border-pink-100">
-          <form onSubmit={handleSaveCurrent} className="flex gap-2">
+        <div className="p-3.5 sm:p-4 bg-pink-50/50 border-b border-pink-100">
+          <form onSubmit={handleSaveCurrent} className="flex flex-col sm:flex-row gap-2">
             <input
               type="text"
               value={saveAsName}
               onChange={(e) => setSaveAsName(e.target.value)}
-              placeholder="e.g. Science Term 1 - Set A - Answer Key"
-              className="flex-1 px-3 py-2 text-xs rounded-lg border border-pink-200 focus:border-[#E6007E] focus:ring-1 focus:ring-[#E6007E] outline-none bg-white"
+              placeholder="Save name, e.g. Term 1 - Set A"
+              className="flex-1 px-3 py-2 text-base sm:text-xs rounded-lg border border-pink-200 focus:border-[#E6007E] outline-none bg-white min-h-[40px]"
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-[#E6007E] hover:bg-[#c9006e] text-white text-xs font-bold rounded-lg flex items-center gap-1.5 shadow-sm transition-colors"
+              className="px-4 py-2 bg-[#E6007E] hover:bg-[#c9006e] text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 shadow-sm transition-colors min-h-[44px]"
             >
               <Plus className="w-4 h-4" />
               <span>Save Current Work</span>
@@ -173,19 +181,19 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
         </div>
 
         {/* Search & Actions Bar */}
-        <div className="px-6 py-2.5 border-b border-slate-100 flex items-center justify-between gap-4">
+        <div className="px-4 sm:px-6 py-2.5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2.5 bg-white">
           <input
             type="text"
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            placeholder="Search saved sheets..."
-            className="px-3 py-1.5 text-xs rounded-md border border-slate-200 focus:border-[#E6007E] outline-none w-64"
+            placeholder="Search sheets..."
+            className="px-3 py-1.5 text-base sm:text-xs rounded-md border border-slate-200 focus:border-[#E6007E] outline-none w-full sm:w-60 min-h-[36px]"
           />
 
-          <div className="flex items-center gap-2">
-            <label className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 px-2.5 py-1.5 rounded border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <label className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors min-h-[40px]">
               <Upload className="w-3.5 h-3.5 text-slate-500" />
-              <span>Import JSON</span>
+              <span>Import</span>
               <input
                 type="file"
                 accept=".json"
@@ -196,29 +204,28 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
 
             <button
               onClick={handleExportJSON}
-              className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 px-2.5 py-1.5 rounded border border-slate-200 hover:bg-slate-50 transition-colors"
+              className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors min-h-[40px]"
             >
               <Download className="w-3.5 h-3.5 text-slate-500" />
-              <span>Export All (JSON)</span>
+              <span>Export All</span>
             </button>
           </div>
         </div>
 
         {/* Sheets List */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-3">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3">
           {filteredSheets.length === 0 ? (
-            <div className="text-center py-12 text-slate-400">
-              <FolderOpen className="w-12 h-12 mx-auto text-slate-300 mb-2 stroke-1" />
+            <div className="text-center py-10 text-slate-400">
+              <FolderOpen className="w-10 h-10 mx-auto text-slate-300 mb-2 stroke-1" />
               <p className="text-sm font-medium">No saved sheets found</p>
               <p className="text-xs text-slate-400 mt-1">
-                Save your filled OMR sheet above to store it permanently on this browser.
+                Save your filled OMR sheet to store it locally on this device.
               </p>
             </div>
           ) : (
             filteredSheets.map((sheet) => {
               const answeredCount = sheet.data.answers.filter((a) => a !== null).length;
               const dateStr = new Date(sheet.savedAt).toLocaleDateString(undefined, {
-                year: "numeric",
                 month: "short",
                 day: "numeric",
                 hour: "2-digit",
@@ -228,7 +235,7 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
               return (
                 <div
                   key={sheet.id}
-                  className="p-3.5 rounded-lg border border-slate-200 hover:border-pink-200 bg-white hover:bg-pink-50/20 transition-all flex items-center justify-between gap-4"
+                  className="p-3.5 rounded-xl border border-slate-200 hover:border-pink-200 bg-white hover:bg-pink-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
                   {/* Left: Info */}
                   <div className="flex-1 min-w-0">
@@ -238,18 +245,18 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
                           type="text"
                           value={editingName}
                           onChange={(e) => setEditingName(e.target.value)}
-                          className="px-2 py-1 text-xs border border-[#E6007E] rounded outline-none w-full font-bold"
+                          className="px-2 py-1 text-base sm:text-xs border border-[#E6007E] rounded outline-none w-full font-bold"
                           autoFocus
                         />
                         <button
                           onClick={() => handleSaveRename(sheet.id)}
-                          className="p-1 text-emerald-600 hover:bg-emerald-50 rounded"
+                          className="p-2 text-emerald-600 hover:bg-emerald-50 rounded min-w-[36px] min-h-[36px] flex items-center justify-center"
                         >
                           <Check className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => setEditingId(null)}
-                          className="p-1 text-slate-400 hover:bg-slate-100 rounded"
+                          className="p-2 text-slate-400 hover:bg-slate-100 rounded min-w-[36px] min-h-[36px] flex items-center justify-center"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -261,7 +268,7 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
                         </h4>
                         <button
                           onClick={() => handleStartRename(sheet)}
-                          className="text-slate-400 hover:text-slate-600 p-0.5 rounded hover:bg-slate-100"
+                          className="text-slate-400 hover:text-slate-600 p-1.5 rounded hover:bg-slate-100 min-w-[32px] min-h-[32px] flex items-center justify-center"
                           title="Rename"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -269,14 +276,14 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
                       </div>
                     )}
 
-                    <div className="flex items-center gap-3 text-[11px] text-slate-500 mt-1">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] text-slate-500 mt-1">
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3 text-slate-400" />
                         {dateStr}
                       </span>
                       <span className="inline-flex items-center gap-1 font-semibold text-[#E6007E]">
                         <CheckCircle2 className="w-3 h-3" />
-                        {answeredCount} / 100 answered
+                        {answeredCount} / 100
                       </span>
                       {sheet.data.selectedSet && (
                         <span className="bg-pink-100 text-[#E6007E] px-1.5 py-0.2 rounded font-bold text-[10px]">
@@ -287,46 +294,46 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
                   </div>
 
                   {/* Right: Actions */}
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <div className="flex items-center gap-2 self-end sm:self-auto flex-shrink-0">
                     <button
                       onClick={() => {
                         onLoadSheet(sheet.data, sheet.name);
                         onClose();
                         showToast(`Opened "${sheet.name}"`);
                       }}
-                      className="px-3 py-1.5 bg-[#E6007E] hover:bg-[#c9006e] text-white text-xs font-bold rounded shadow-sm transition-colors"
+                      className="px-3.5 py-2 bg-[#E6007E] hover:bg-[#c9006e] text-white text-xs font-bold rounded-lg shadow-sm transition-colors min-h-[44px]"
                     >
                       Open
                     </button>
 
                     <button
                       onClick={() => handleDuplicate(sheet.id)}
-                      className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded border border-slate-200"
+                      className="p-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-200 min-w-[44px] min-h-[44px] flex items-center justify-center"
                       title="Duplicate"
                     >
-                      <Copy className="w-3.5 h-3.5" />
+                      <Copy className="w-4 h-4" />
                     </button>
 
                     <button
                       onClick={() => onDirectDownloadPdf(sheet.data, sheet.name)}
-                      className="p-1.5 text-pink-700 hover:text-pink-900 hover:bg-pink-50 rounded border border-pink-200"
+                      className="p-2.5 text-pink-700 hover:text-pink-900 hover:bg-pink-50 rounded-lg border border-pink-200 min-w-[44px] min-h-[44px] flex items-center justify-center"
                       title="Quick Download PDF"
                     >
-                      <FileDown className="w-3.5 h-3.5" />
+                      <FileDown className="w-4 h-4" />
                     </button>
 
                     {deleteConfirmId === sheet.id ? (
-                      <div className="flex items-center gap-1 bg-red-50 p-1 rounded border border-red-200">
-                        <span className="text-[10px] text-red-600 font-bold px-1">Delete?</span>
+                      <div className="flex items-center gap-1 bg-red-50 p-1 rounded-lg border border-red-200 min-h-[44px]">
+                        <span className="text-[10px] text-red-600 font-bold px-1">Sure?</span>
                         <button
                           onClick={() => handleDelete(sheet.id)}
-                          className="px-1.5 py-0.5 bg-red-600 text-white rounded text-[10px] font-bold"
+                          className="px-2 py-1 bg-red-600 text-white rounded text-xs font-bold min-h-[36px]"
                         >
                           Yes
                         </button>
                         <button
                           onClick={() => setDeleteConfirmId(null)}
-                          className="px-1.5 py-0.5 bg-slate-200 text-slate-700 rounded text-[10px]"
+                          className="px-2 py-1 bg-slate-200 text-slate-700 rounded text-xs min-h-[36px]"
                         >
                           No
                         </button>
@@ -334,10 +341,10 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
                     ) : (
                       <button
                         onClick={() => setDeleteConfirmId(sheet.id)}
-                        className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded border border-slate-200"
+                        className="p-2.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg border border-slate-200 min-w-[44px] min-h-[44px] flex items-center justify-center"
                         title="Delete"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     )}
                   </div>
@@ -348,11 +355,11 @@ export const SavedSheetsModal: React.FC<SavedSheetsModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-          <span>{sheets.length} total saved sheets</span>
+        <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <span>{sheets.length} saved</span>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 font-semibold text-slate-800 rounded-lg transition-colors"
+            className="px-4 py-2 bg-slate-200 hover:bg-slate-300 font-semibold text-slate-800 rounded-lg transition-colors min-h-[44px]"
           >
             Close
           </button>
